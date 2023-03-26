@@ -19,7 +19,7 @@ public class ProjetService {
     @Autowired
     private ProjetRepository projetRepository;
 
-    public List<Projet> findAllProjetByChef(Long id){
+    public List<Projet> findAllProjetByChef(Long id) throws SQLException{
         return this.projetRepository.findAllByChefProjetId(id);
     }
 

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import com.ms.initialiserprojetservice.model.Projet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,30 +34,49 @@ public class ProjetController {
     }
 
     @GetMapping("/chefProjets/{id}")
-    public List<Projet> getProjetsByChefProjet(@PathVariable(name="id") Long id) throws SQLException{
+    public ResponseEntity<List<Projet>> getProjetsByChefProjet(@PathVariable(name="id") Long id) {
         
-        ChefProjet chef  = this.chefProjetClientService.findChefProjetsById(id);
-        List<Projet> projets = this.projetService.findAllProjetByChef(id);
-        for(Projet projet:projets){
-            projet.setChefProjet(chef);
-        }
-        return projets;
-    }
-
-    @GetMapping("/{id}")
-    public Projet getProjetById(@PathVariable(name="id") Long id){
+        ChefProjet chef = null;
+        List<Projet> projets = null;
+        HttpStatus status = HttpStatus.OK;
+    
         try {
-            return this.projetService.getProjetById(id);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            chef = this.chefProjetClientService.findChefProjetsById(id);
+            projets = this.projetService.findAllProjetByChef(id);
+    
+            if (chef == null || projets == null) {
+                status = HttpStatus.NOT_FOUND;
+            } else {
+                for (Projet projet : projets) {
+                    projet.setChefProjet(chef);
+                }
+            }
+        }catch(SQLException e) {
             e.printStackTrace();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return null ;
+    
+        return new ResponseEntity<>(projets, status);
     }
+    
 
     @PostMapping
-    public Projet ajouterProjet(@RequestBody Projet p){
-        return this.projetService.save(p);
+    public ResponseEntity<Projet> ajouterProjet(@RequestBody Projet p){
+        Projet projet = null;
+        HttpStatus status = HttpStatus.CREATED;
+
+    try {
+        projet = this.projetService.save(p);
+
+        if (projet == null) {
+            status = HttpStatus.BAD_REQUEST;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        status = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    return new ResponseEntity<>(projet, status);
     }
     
     
