@@ -40,5 +40,9 @@ public class ProjetService {
         }
     }
 
+    public Projet getProjetById(Long id){
+        return this.projetRepository.findById(id).get();
+    }
+
 
 }

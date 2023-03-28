@@ -76,10 +76,29 @@ public class ProjetController {
         status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    return new ResponseEntity<>(projet, status);
+    return new ResponseEntity<Projet>(projet, status);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Projet> getProjetById(@PathVariable Long id){
+        Projet projet = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            projet = this.projetService.getProjetById(id);
+            if (projet == null) {
+                status = HttpStatus.BAD_REQUEST;
+            }else{
+                ChefProjet chef = this.chefProjetClientService.findChefProjetsById(projet.getChefProjetId());
+                projet.setChefProjet(chef);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Projet>(projet, status);
     }
     
-    
+   
     
     
 }
