@@ -33,8 +33,6 @@ public class Projet {
 
     @Transient
     private ChefProjet chefProjet;//chaque projet est gere par un chef de projet
-
-    
     private Date dateFin; //date fin de projet estimé
 
     

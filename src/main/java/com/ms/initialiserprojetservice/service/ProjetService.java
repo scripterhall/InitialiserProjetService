@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.ms.initialiserprojetservice.model.Projet;
 import com.ms.initialiserprojetservice.repository.ProjetRepository;
-
-
-
 @Service
 public class ProjetService {
     
@@ -38,6 +35,9 @@ public class ProjetService {
             logger.error("Erreur de base de données: ".concat(ex.getMessage()));
             return null;
         }
+    }
+    public Projet getProjetById(Long id) throws SQLException {
+        return projetRepository.findById(id).get();
     }
 
     public Projet getProjetById(Long id){

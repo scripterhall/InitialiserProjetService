@@ -19,7 +19,4 @@ public class ChefProjet {
     private String pwd ;
     private boolean competanceAnalyseDonnees;
     private boolean competanceDeGestion;
-
-
-
 }
