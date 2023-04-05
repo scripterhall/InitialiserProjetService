@@ -40,9 +40,7 @@ public class ProjetService {
         return projetRepository.findById(id).get();
     }
 
-    public Projet getProjetById(Long id){
-        return this.projetRepository.findById(id).get();
-    }
+    
 
 
 }
