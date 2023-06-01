@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,8 @@ public class Projet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //identifiant de projet
+
+    @Column(unique = true)
     private String nom; //nom de projet
     private String cles; //abvreva de projet
     private Date dateDebut; //date debut de projet

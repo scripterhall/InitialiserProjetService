@@ -29,7 +29,10 @@ public class ProjetService {
 
     public Projet save(Projet p){
         try {
-            return this.projetRepository.save(p);
+            if(!this.projetRepository.findByNom(p.getNom()).isPresent())
+                return this.projetRepository.save(p);
+            else
+                return null ;
         } catch (DataAccessException ex) {
             // Gérer l'exception ici
             logger.error("Erreur de base de données: ".concat(ex.getMessage()));
